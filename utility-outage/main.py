@@ -39,6 +39,10 @@ def main(argv):
 
 # assert "Storm Center" in driver.title
 
+	try:
+		WebDriverWait(driver 10).until(EC.element_to_be_clickable(By.XPATH, '//li[@id='summary_tab']/a'))
+	except TimeoutException:
+    	raise Exception('!!!!!!#######!!!!!!!  Unable to find summary tab after waiting 10 seconds')	
 	summarytab = driver.find_element_by_xpath("//li[@id='summary_tab']/a")
 	summarytab.click()
 
@@ -64,7 +68,7 @@ def main(argv):
 	# driver.switch_to.frame(county_frame)
 	print >> f, ("driver.current_url: {}",  driver.current_url)
 
-	WebDriverWait(driver, 100)
+	# WebDriverWait(driver, 100)
 	textTable = ''
 # while len(textTable) < 1000:
 # 	outputTable = driver.find_element_by_id('outageReportTable')
@@ -86,7 +90,12 @@ def main(argv):
 	#     print "Unexpected error:", sys.exc_info()[0]
 	#     driver.quit()
 	# print("customer_outage_total: {}", repr(driver.find_element_by_xpath('//*[@id="outageReportTotalTable"]/tbody/tr/td[0]')))
-	customer_outage_total = driver.find_element_by_id('num_custs_text')
+	
+	try:
+		WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="num_custs_text" and text() != ""]'))
+	except TimeoutException:
+    	raise Exception('*******-------*********** Unable to find text in this element after waiting 10 seconds')	
+    customer_outage_total = driver.find_element_by_id('num_custs_text')
 	print >> f, ("customer_outage_total: {}, {}", repr(customer_outage_total), customer_outage_total.text)
 
 	driver.close()

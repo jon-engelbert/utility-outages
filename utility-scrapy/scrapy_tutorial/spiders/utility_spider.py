@@ -441,8 +441,9 @@ class DmozSpider(scrapy.Spider):
             with open("outageviewer.txt", 'a') as f:
                 f.write(filename +  "/index.php?action=get_viewer_data\n")
             if response.url[-1] != '/':
-                response.url += '/'
-            yield scrapy.Request(response.url + "index.php?action=get_viewer_data", callback=self.parse_outageviewer)
+                yield scrapy.Request(response.url + "/index.php?action=get_viewer_data", callback=self.parse_outageviewer)
+            else:
+                yield scrapy.Request(response.url + "index.php?action=get_viewer_data", callback=self.parse_outageviewer)
                 # make_requests_from_url(response.url + "index.php?action=get_viewer_data")
 
 
